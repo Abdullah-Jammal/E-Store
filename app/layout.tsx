@@ -22,7 +22,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <Container>{children}</Container>
+          <Container className="pt-24">{children}</Container>
         </ThemeProvider>
       </body>
     </html>
