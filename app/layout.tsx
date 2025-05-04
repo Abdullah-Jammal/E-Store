@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import Container from "@/components/global/Container";
 export const metadata: Metadata = {
   title: "E-Store",
   description: "E-Store Using Next.js",
@@ -21,7 +22,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          {children}
+          <Container>{children}</Container>
         </ThemeProvider>
       </body>
     </html>
