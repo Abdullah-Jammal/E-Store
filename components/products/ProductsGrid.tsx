@@ -5,8 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/format";
 import FavoriteToggleButton from "./FavoriteToggleButton";
+import EmptyList from "../global/EmptyList";
 
 const ProductsGrid = ({ products }: ProductsGridProps) => {
+
+  if(products.length === 0) {
+    return <EmptyList title="There are no products!" className="mt-6 font-bold tracking-wider"/>
+  }
+
   return (
     <section className="pt-10 grid md:grid-cols-2 gap-4 lg:grid-cols-3 sm:grid-cols-1 pb-2">
       {products?.map((product) => {

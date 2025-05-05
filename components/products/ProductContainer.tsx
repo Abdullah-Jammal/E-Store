@@ -1,11 +1,57 @@
-import React from 'react'
+import { fetchAllProducts } from "@/utils/actions";
+import React from "react";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
+import { LuLayoutGrid, LuList } from "react-icons/lu";
+import Link from "next/link";
+import { links } from "@/utils/links";
+import ProductsGrid from "./ProductsGrid";
+import ProductsList from "./ProductsList";
 
-const ProductContainer = () => {
+const ProductContainer = async ({ layout }: { layout: string }) => {
+  const products = await fetchAllProducts();
+  const numberOfProducts = products.length;
+
   return (
-    <div>
-      ProductContainer
-    </div>
-  )
-}
+    <>
+      <section>
+        <div className="flex justify-between items-center">
+          <h4>
+            {numberOfProducts} product{numberOfProducts > 1 && "s"}
+          </h4>
+          <div className="flex gap-4">
+            <Button
+              asChild
+              size={"icon"}
+              variant={layout === "grid" ? "default" : "outline"}
+            >
+              <Link href={`${links.PRODUCTS.href}?layout=grid`}>
+                <LuLayoutGrid />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size={"icon"}
+              variant={layout === "list" ? "default" : "outline"}
+            >
+              <Link href={`${links.PRODUCTS.href}?layout=list`}>
+                <LuList />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      <Separator className="mt-4" />
 
-export default ProductContainer
+      {numberOfProducts === 0 ? (
+        <h5>Soory , No Products Matched Your Search</h5>
+      ) : layout === "grid" ? (
+        <ProductsGrid products={products} />
+      ) : (
+        <ProductsList products={products}/>
+      )}
+    </>
+  );
+};
+
+export default ProductContainer;
