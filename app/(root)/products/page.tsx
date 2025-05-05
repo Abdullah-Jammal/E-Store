@@ -1,10 +1,11 @@
 import ProductContainer from '@/components/products/ProductContainer'
 import React from 'react'
 
-const products = async ({searchParams} : {searchParams : {layout?: string}}) => {
-  const { layout = 'grid' } = await searchParams
+const products = async ({searchParams} : {searchParams : {layout?: string, search?: string}}) => {
+  const { layout = 'grid' } = await searchParams || {}
+  const { search } = await searchParams
   return (
-      <ProductContainer layout = {layout}/>
+      <ProductContainer layout = {layout} search = {search}/>
   )
 }
 

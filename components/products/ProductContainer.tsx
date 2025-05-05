@@ -8,9 +8,16 @@ import { links } from "@/utils/links";
 import ProductsGrid from "./ProductsGrid";
 import ProductsList from "./ProductsList";
 
-const ProductContainer = async ({ layout }: { layout: string }) => {
-  const products = await fetchAllProducts();
+const ProductContainer = async ({
+  layout,
+  search,
+}: {
+  layout: string;
+  search: string;
+}) => {
+  const products = await fetchAllProducts({search});
   const numberOfProducts = products.length;
+  const searchTerm = search ? `&search=${search}` : "";
 
   return (
     <>
@@ -25,7 +32,7 @@ const ProductContainer = async ({ layout }: { layout: string }) => {
               size={"icon"}
               variant={layout === "grid" ? "default" : "outline"}
             >
-              <Link href={`${links.PRODUCTS.href}?layout=grid`}>
+              <Link href={`${links.PRODUCTS.href}?layout=grid${searchTerm}`}>
                 <LuLayoutGrid />
               </Link>
             </Button>
@@ -34,7 +41,7 @@ const ProductContainer = async ({ layout }: { layout: string }) => {
               size={"icon"}
               variant={layout === "list" ? "default" : "outline"}
             >
-              <Link href={`${links.PRODUCTS.href}?layout=list`}>
+              <Link href={`${links.PRODUCTS.href}?layout=list${searchTerm}`}>
                 <LuList />
               </Link>
             </Button>
@@ -48,7 +55,7 @@ const ProductContainer = async ({ layout }: { layout: string }) => {
       ) : layout === "grid" ? (
         <ProductsGrid products={products} />
       ) : (
-        <ProductsList products={products}/>
+        <ProductsList products={products} />
       )}
     </>
   );
