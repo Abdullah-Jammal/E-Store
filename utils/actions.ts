@@ -1,5 +1,6 @@
 "use server";
 import db from "@/utils/db";
+import { redirect } from "next/navigation";
 
 // Fetch All Featured Products
 export const fetchFeaturedProducts = async () => {
@@ -26,4 +27,17 @@ export const fetchAllProducts = async ({ search = "" }: { search: string }) => {
     },
   });
   return products;
+};
+
+// Get Product By ID
+export const fetchProductByID = async ({ id }: { id: string }) => {
+  const product = await db.products.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  if(!product) {
+    redirect('/products')
+  }
+  return product;
 };
