@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import EmptyList from "@/components/global/EmptyList";
 import FavoriteToggleButton from "@/components/products/FavoriteToggleButton";
 import AddToCart from "@/components/single-product/AddToCart";
@@ -8,11 +9,7 @@ import { formatCurrency } from "@/utils/format";
 import Image from "next/image";
 import React from "react";
 
-export default async function ProductsDetails({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function ProductsDetails({ params }:  any){
   const { id } = await params;
   const product = await fetchProductByID({ id: id });
   const dollarAmount = formatCurrency(product.price);
