@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Container from "@/components/global/Container";
 import { Toaster } from "@/components/ui/sonner";
@@ -24,8 +23,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            <Container className="pt-24">{children}</Container>
+            <Container>{children}</Container>
             <Toaster />
           </ThemeProvider>
         </body>

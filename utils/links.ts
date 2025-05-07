@@ -32,6 +32,10 @@ export const dropDownMenu: NavbarLinks[] = [
     href: "/favorites",
     name: "Favorites",
   },
+  {
+    href : "/admin/sales",
+    name : "dashboard"
+  }
 ];
 
 export const links = {
@@ -72,3 +76,19 @@ export const links = {
     name: "Sign-in",
   },
 } as const;
+
+
+export const adminLinks:NavbarLinks[] = [
+  {
+    href : "/admin/sales",
+    name : "sales"
+  },
+  {
+    href : "/admin/products",
+    name : "my products"
+  },
+  {
+    href : "/admin/products/create",
+    name : "create product"
+  },
+]

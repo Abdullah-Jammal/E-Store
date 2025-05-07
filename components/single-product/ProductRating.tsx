@@ -2,7 +2,6 @@ import React from "react";
 import { FaStar } from "react-icons/fa";
 
 const ProductRating = ({ productID }: { productID: string }) => {
-  console.log(productID);
   const rating = 4.2;
   const reviews = 22;
   const reviewText = `(${reviews}) Reviews`;

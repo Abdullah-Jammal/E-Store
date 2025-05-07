@@ -6,6 +6,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { auth } from "@clerk/nextjs/server";
+
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { dropDownMenu } from "@/utils/links";
@@ -14,7 +16,9 @@ import UserIcon from "./UserIcon";
 import SignOut from "./SignOut";
 import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 
-const LinksDropDown = () => {
+const LinksDropDown = async () => {
+  const { userId } = await auth();
+  const isAdmin = userId === process.env.ADMIN_USER_ID;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,11 +29,9 @@ const LinksDropDown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="start" sideOffset={10}>
         <SignedOut>
-        <DropdownMenuItem className="flex flex-col gap-4">
+          <DropdownMenuItem className="flex flex-col gap-4">
             <SignInButton mode="modal">
-              <Button className="w-full">
-                Sign In
-              </Button>
+              <Button className="w-full">Sign In</Button>
             </SignInButton>
             <SignUpButton mode="modal">
               <Button className="w-full" variant={"outline"}>
@@ -39,11 +41,16 @@ const LinksDropDown = () => {
           </DropdownMenuItem>
         </SignedOut>
         <SignedIn>
-          {dropDownMenu.map((link) => (
-            <DropdownMenuItem key={link.href}>
-              <Link href={link.href}>{link.name}</Link>
-            </DropdownMenuItem>
-          ))}
+          {dropDownMenu.map((link) => {
+            if (link.name === "dashboard" && !isAdmin) {
+              return null;
+            }
+            return (
+              <DropdownMenuItem key={link.href}>
+                <Link href={link.href}>{link.name}</Link>
+              </DropdownMenuItem>
+            );
+          })}
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <SignOut />
