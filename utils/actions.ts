@@ -41,3 +41,9 @@ export const fetchProductByID = async ({ id }: { id: string }) => {
   }
   return product;
 };
+
+
+// Create Product Function
+export const createProduct = async () : Promise<{message:string}> => {
+  return {message:"product created successfully!"}
+}

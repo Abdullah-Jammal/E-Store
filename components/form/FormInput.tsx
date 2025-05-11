@@ -1,12 +1,6 @@
+import { FormInputProps } from "@/utils/types";
+import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-
-interface FormInputProps {
-  name: string;
-  type: string;
-  label?: string;
-  defaultValue?: string;
-  placeholder?: string;
-}
 
 const FormInput = ({
   name,
@@ -16,9 +10,12 @@ const FormInput = ({
   placeholder,
 }: FormInputProps) => {
   return (
-    <div className="mb-2">
-      <Label htmlFor={name} className="capitalize">{label || name}</Label>
-      
+    <div className="mb-4">
+      <Label htmlFor={name} className="mb-1">{label || name}</Label>
+      <Input placeholder={placeholder} type={type} name={name}
+      id={name} defaultValue={defaultValue} required
+      />
+
     </div>
   )
 };
