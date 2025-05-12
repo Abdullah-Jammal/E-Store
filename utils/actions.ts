@@ -48,10 +48,19 @@ export const fetchProductByID = async ({ id }: { id: string }) => {
 const getAuthUser = async () => {
   const user = await currentUser();
   if (!user) {
-    throw new Error("you must logein!");
+    return redirect("/");
   }
   return user;
 };
+
+const renderError = (error: unknown): { message: string } => {
+  console.log(error);
+
+  return {
+    message: error instanceof Error ? error.message : "Unknown Error",
+  };
+};
+
 // Create Product Function
 export const createProduct = async (
   prevState: any,
@@ -72,13 +81,12 @@ export const createProduct = async (
         description,
         price,
         featured,
-        image : "/images/product-1.jpg",
-        clerkId : user.id
-      }
-    })
-    return {message : "product created successfully!"}
+        image: "/images/product-1.jpg",
+        clerkId: user.id,
+      },
+    });
+    return { message: "product created successfully!" };
   } catch (error) {
-    return renderError
-    console.log(error);
+    return renderError(error);
   }
 };
