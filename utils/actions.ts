@@ -3,6 +3,7 @@
 import db from "@/utils/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { productSchema } from "./schema";
 
 // Fetch All Featured Products
 export const fetchFeaturedProducts = async () => {
@@ -69,18 +70,17 @@ export const createProduct = async (
   const user = await getAuthUser();
 
   try {
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const featured = Boolean(formData.get("featured") as string);
-    const price = Number(formData.get("price") as string);
-    const image = formData.get("image") as File;
+    const rowData = Object.fromEntries(formData);
+    const validateData = productSchema.safeParse(rowData);
+
+    if (!validateData.success) {
+      const error = validateData.error.errors.map((e) => e.message);
+      throw new Error(error.join(","));
+    }
 
     await db.products.create({
       data: {
-        name,
-        description,
-        price,
-        featured,
+        ...validateData.data,
         image: "/images/product-1.jpg",
         clerkId: user.id,
       },

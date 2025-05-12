@@ -7,11 +7,10 @@ import { usePathname } from "next/navigation";
 
 const SideBarComponent = () => {
   const path_url = usePathname();
-  console.log(path_url)
   return (
     <aside>
       {adminLinks.map((link) => {
-        const active_page = link.href === path_url
+        const active_page = link.href === path_url;
         return (
           <Button
             key={link.href}

@@ -30,8 +30,10 @@ const page = () => {
               defaultChecked={false}
             />
 
-            <SubmitButton text="submit" className="bg-blue-500 text-white capitalize w-full" />
-
+            <SubmitButton
+              text="submit"
+              className="bg-blue-500 text-white capitalize w-full"
+            />
           </div>
         </FormContainer>
       </div>
