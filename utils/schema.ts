@@ -1,4 +1,5 @@
-import { z } from "zod";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { z, ZodSchema } from "zod";
 
 export const productSchema = z.object({
   name: z.coerce
@@ -16,3 +17,12 @@ export const productSchema = z.object({
   price: z.coerce.number().int().min(0, { message: "must be more than 0" }),
   featured: z.coerce.boolean(),
 });
+
+export function validateSchema<T>(schema: ZodSchema<T>, data: unknown): T {
+  const result = schema.safeParse(data);
+  if (!result.success) {
+    const error = result.error.errors.map((e: any) => e.message);
+    throw new Error(error.join(","));
+  }
+  return result.data;
+}

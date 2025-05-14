@@ -3,7 +3,7 @@
 import db from "@/utils/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { productSchema } from "./schema";
+import { productSchema, validateSchema } from "./schema";
 
 // Fetch All Featured Products
 export const fetchFeaturedProducts = async () => {
@@ -71,16 +71,11 @@ export const createProduct = async (
 
   try {
     const rowData = Object.fromEntries(formData);
-    const validateData = productSchema.safeParse(rowData);
-
-    if (!validateData.success) {
-      const error = validateData.error.errors.map((e) => e.message);
-      throw new Error(error.join(","));
-    }
+    const validateData = validateSchema(productSchema, rowData)
 
     await db.products.create({
       data: {
-        ...validateData.data,
+        ...validateData,
         image: "/images/product-1.jpg",
         clerkId: user.id,
       },

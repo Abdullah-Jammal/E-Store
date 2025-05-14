@@ -16,7 +16,7 @@ function FormContainer({ children, action }: FormProps) {
   const [state, formAction] = useActionState(action, initialState);
   useEffect(() => {
     if(state.message) {
-      toast.success("ok!", {
+      toast.success("", {
         description : state.message
       })
     }
