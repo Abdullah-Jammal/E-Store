@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { z, ZodSchema } from "zod";
 
 export const productSchema = z.object({
@@ -21,8 +20,20 @@ export const productSchema = z.object({
 export function validateSchema<T>(schema: ZodSchema<T>, data: unknown): T {
   const result = schema.safeParse(data);
   if (!result.success) {
-    const error = result.error.errors.map((e: any) => e.message);
-    throw new Error(error.join(","));
+    const error = result.error.errors.map((e) => e.message).join(", ");
+    throw new Error(error);
   }
   return result.data;
 }
+function validateImageFile() {
+  const imageSize = 1024 * 1024; // 1MB
+  const acceptFileType = ['image/'];
+
+  return z.instanceof(File)
+    .refine((file) => file.size <= imageSize, "File size must be less than 1 MB")
+    .refine((file) => acceptFileType.some((type) => file.type.startsWith(type)), "File must be an image!");
+}
+
+export const imageSchema = z.object({
+  image: validateImageFile()
+});

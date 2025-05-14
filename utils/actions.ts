@@ -3,7 +3,8 @@
 import db from "@/utils/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { productSchema, validateSchema } from "./schema";
+import { imageSchema, productSchema, validateSchema } from "./schema";
+import { uploadImage } from "./supabase";
 
 // Fetch All Featured Products
 export const fetchFeaturedProducts = async () => {
@@ -71,16 +72,25 @@ export const createProduct = async (
 
   try {
     const rowData = Object.fromEntries(formData);
-    const validateData = validateSchema(productSchema, rowData)
+    const file = formData.get("image") as File;
+    
+    // Validate product data
+    const validateData = validateSchema(productSchema, rowData);
+    // Validate image data
+    const validateImage = validateSchema(imageSchema, { image: file });
+
+    // Upload image and get URL
+    const fullImagePath = await uploadImage(validateImage.image);
 
     await db.products.create({
       data: {
         ...validateData,
-        image: "/images/product-1.jpg",
+        image: fullImagePath,
         clerkId: user.id,
       },
     });
-    return { message: "product created successfully!" };
+
+    return { message: "Product created successfully!" };
   } catch (error) {
     return renderError(error);
   }
